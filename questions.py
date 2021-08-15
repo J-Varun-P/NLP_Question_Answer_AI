@@ -2,6 +2,7 @@ import nltk
 import sys
 import os
 import string
+import math
 
 FILE_MATCHES = 1
 SENTENCE_MATCHES = 1
@@ -74,13 +75,19 @@ def tokenize(document):
         words[i] = words[i].lower()
     i = 0
     x = string.punctuation
+    y = nltk.corpus.stopwords.words("english")
     while i < n:
         if words[i] in x:
             words.remove(words[i])
             i -= 1
             n -= 1
+        elif words[i] in y:
+            words.remove(words[i])
+            i -= 1
+            n -= 1
         i += 1
-    print(nltk.corpus.stopwords.words("english"))
+    #print(nltk.corpus.stopwords.words("english"))
+    return words
     #raise NotImplementedError
 
 
@@ -92,7 +99,19 @@ def compute_idfs(documents):
     Any word that appears in at least one of the documents should be in the
     resulting dictionary.
     """
-    raise NotImplementedError
+    idfs = dict()
+    n1 = len(documents)
+    for i in documents:
+        for j in documents[i]:
+            n2 = 0
+            for x in documents:
+                if x != i:
+                    if j in documents[x]:
+                        n2 += 1
+            n2 += 1
+            idfs[j] = math.log(n1/n2)
+    return idfs
+    #raise NotImplementedError
 
 
 def top_files(query, files, idfs, n):
@@ -102,7 +121,28 @@ def top_files(query, files, idfs, n):
     to their IDF values), return a list of the filenames of the the `n` top
     files that match the query, ranked according to tf-idf.
     """
-    raise NotImplementedError
+    top = dict()
+    for x in files:
+        sum = 0
+        for y in query:
+            n1 = 0
+            for i in files[x]:
+                if i == y:
+                    n1 += 1
+            sum = sum + (n1 * idfs[y])
+        top[x] = sum
+    top = sorted(top.items(), key=lambda item: item[1], reverse=True)
+    print(top)
+    top_n = []
+    i = 0
+    for x in top:
+        if i == n:
+            break
+        top_n.append(x[0])
+        i += 1
+    print(top_n)
+    return top_n
+    #raise NotImplementedError
 
 
 def top_sentences(query, sentences, idfs, n):
