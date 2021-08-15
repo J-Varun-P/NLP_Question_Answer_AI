@@ -132,7 +132,7 @@ def top_files(query, files, idfs, n):
             sum = sum + (n1 * idfs[y])
         top[x] = sum
     top = sorted(top.items(), key=lambda item: item[1], reverse=True)
-    print(top)
+    #print(top)
     top_n = []
     i = 0
     for x in top:
@@ -140,7 +140,7 @@ def top_files(query, files, idfs, n):
             break
         top_n.append(x[0])
         i += 1
-    print(top_n)
+    #print(top_n)
     return top_n
     #raise NotImplementedError
 
@@ -153,7 +153,33 @@ def top_sentences(query, sentences, idfs, n):
     the query, ranked according to idf. If there are ties, preference should
     be given to sentences that have a higher query term density.
     """
-    raise NotImplementedError
+    top = dict()
+    for y in query:
+        print(y,idfs[y])
+    for x in sentences:
+        sum = 0
+        temp = []
+        for temp1 in query:
+            temp.append(temp1)
+        for y in sentences[x]:
+            if y in temp:
+                sum += idfs[y]
+                temp.remove(y)
+        top[x] = sum
+    top = sorted(top.items(), key=lambda item: item[1], reverse=True)
+    #print(top)
+    top_n = []
+    i = 0
+    for x in top:
+        if i == n:
+            break
+        top_n.append(x[0])
+        i += 1
+    #print(top_n)
+    for i in range(10):
+        print(top[i])
+    return top_n
+    #raise NotImplementedError
 
 
 if __name__ == "__main__":
