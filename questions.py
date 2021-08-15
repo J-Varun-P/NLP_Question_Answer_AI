@@ -154,8 +154,6 @@ def top_sentences(query, sentences, idfs, n):
     be given to sentences that have a higher query term density.
     """
     top = dict()
-    for y in query:
-        print(y,idfs[y])
     for x in sentences:
         sum = 0
         temp = []
@@ -167,7 +165,6 @@ def top_sentences(query, sentences, idfs, n):
                 temp.remove(y)
         top[x] = sum
     top = sorted(top.items(), key=lambda item: item[1], reverse=True)
-    #print(top)
     top_n = []
     i = 0
     for x in top:
@@ -175,10 +172,35 @@ def top_sentences(query, sentences, idfs, n):
             break
         top_n.append(x[0])
         i += 1
-    #print(top_n)
-    for i in range(10):
-        print(top[i])
-    return top_n
+    if len(top) > 1:
+        clash = False
+        for x in top:
+            if x[1] == top[0][1] and x[0] is not top[0][0]:
+                clash = True
+        if clash == False:
+            return top_n
+        else:
+            temp = dict()
+            for x in top:
+                if x[1] == top[0][1]:
+                    z = x[0].split()
+                    n1 = len(z)
+                    n2 = 0
+                    for y in z:
+                        if y.lower() in query:
+                            n2 += 1
+                    temp[x[0]] = n2 / n1
+                else:
+                    break
+            temp = sorted(temp.items(), key=lambda item: item[1], reverse=True)
+            top_n2 = []
+            i = 0
+            for x in temp:
+                if i == n:
+                    break
+                top_n2.append(x[0])
+                i += 1
+            return top_n2
     #raise NotImplementedError
 
 
