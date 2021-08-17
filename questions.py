@@ -86,7 +86,6 @@ def tokenize(document):
             i -= 1
             n -= 1
         i += 1
-    #print(nltk.corpus.stopwords.words("english"))
     return words
     #raise NotImplementedError
 
@@ -132,7 +131,6 @@ def top_files(query, files, idfs, n):
             sum = sum + (n1 * idfs[y])
         top[x] = sum
     top = sorted(top.items(), key=lambda item: item[1], reverse=True)
-    #print(top)
     top_n = []
     i = 0
     for x in top:
@@ -140,7 +138,6 @@ def top_files(query, files, idfs, n):
             break
         top_n.append(x[0])
         i += 1
-    #print(top_n)
     return top_n
     #raise NotImplementedError
 
