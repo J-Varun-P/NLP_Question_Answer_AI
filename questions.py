@@ -171,15 +171,21 @@ def top_sentences(query, sentences, idfs, n):
         i += 1
     if len(top) > 1:
         clash = False
-        for x in top:
-            if x[1] == top[0][1] and x[0] is not top[0][0]:
-                clash = True
+        if top[n][1] == top[n-1][1]:
+            clash = True
         if clash == False:
             return top_n
         else:
             temp = dict()
+            top_n2 = []
             for x in top:
-                if x[1] == top[0][1]:
+                if x[1] != top[n-1][1]:
+                    top_n2.append(x[0])
+                elif x[1] == top[n-1][1]:
+                    break
+            m1 = n - len(top_n2)
+            for x in top:
+                if x[1] == top[n-1][1]:
                     z = x[0].split()
                     n1 = len(z)
                     n2 = 0
@@ -187,17 +193,18 @@ def top_sentences(query, sentences, idfs, n):
                         if y.lower() in query:
                             n2 += 1
                     temp[x[0]] = n2 / n1
-                else:
+                elif x[1] < top[n-1][1]:
                     break
             temp = sorted(temp.items(), key=lambda item: item[1], reverse=True)
-            top_n2 = []
             i = 0
             for x in temp:
-                if i == n:
+                if i == m1:
                     break
                 top_n2.append(x[0])
                 i += 1
             return top_n2
+    else:
+        return top_n
     #raise NotImplementedError
 
 
