@@ -10,4 +10,4 @@ When presented with a query (a question in English asked by the user), document 
 
 Once the top documents are found, the top document(s) will be subdivided into passages (in this case, sentences) so that the most relevant passage to the question can be determined.
 
-Please visit the [Following link](https://cs50.harvard.edu/ai/2020/projects/6/questions/) for more information about the project.
+Please visit the [Following link](https://cs50.harvard.edu/ai/2020/projects/6/questions/) for more information about the project. 
